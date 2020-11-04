@@ -5,30 +5,48 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Caliburn.Micro;
+using RMDesktopUI.Library.Api;
+using RMDesktopUI.Library.Models;
 
 namespace RMDesktopUI.ViewModels
 {
     public class SalesViewModel : Screen
     {
-        private BindingList<string> _products;
+        private IProductEndPoint _productEndPoint;
+        private BindingList<ProductModel> _products;
+        private BindingList<ProductModel> _cart;
+        private string _itemQuantity;
 
-        public BindingList<string> Products
+        public SalesViewModel(IProductEndPoint productEndPoint)
+        {
+            _productEndPoint = productEndPoint;            
+        }
+
+        protected override async void OnViewLoaded(object view)
+        {
+            base.OnViewLoaded(view);
+            await LoadProducts();
+        }
+
+        public async Task LoadProducts()
+        {
+            Products = new BindingList<ProductModel>(await _productEndPoint.GetAll());
+        }
+        
+
+        public BindingList<ProductModel> Products
         {
             get { return _products; }
             set { _products = value; NotifyOfPropertyChange(() => Products); }
         }
-
-        private string _itemQuantity;
-
+        
         public string ItemQuantity
         {
             get { return _itemQuantity; }
             set { _itemQuantity = value; NotifyOfPropertyChange(() => ItemQuantity); }
         }
-
-        private BindingList<string> _cart;
-
-        public BindingList<string> Cart
+       
+        public BindingList<ProductModel> Cart
         {
             get { return _cart; }
             set { _cart = value; NotifyOfPropertyChange(() => Cart); }

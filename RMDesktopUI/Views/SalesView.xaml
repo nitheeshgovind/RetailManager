@@ -46,12 +46,20 @@
 
         <!-- Products -->
         <ListBox
-            x:Name="Products"
+            ItemsSource="{Binding Products}"
             Grid.Row="2"
             Grid.Column="0"
             MinHeight="200"
             MinWidth="150"
-            />
+            >
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock
+                        Text="{Binding ProductName}"
+                        />
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
 
         <StackPanel
             Grid.Column="1"
@@ -92,12 +100,20 @@
 
         <!-- Cart -->
         <ListBox
-            x:Name="Cart"
+            ItemsSource="{Binding Cart}"
             Grid.Row="2"
             Grid.Column="2"
             MinHeight="200"
             MinWidth="150"
-            />
+            >
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock
+                        Text="{Binding ProductName}"
+                        />
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
 
         <DockPanel
             Grid.Row="3"
