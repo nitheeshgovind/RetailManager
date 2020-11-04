@@ -5,8 +5,37 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:RMDesktopUI.Views"
         mc:Ignorable="d"
-        Title="ShellView" Height="350" Width="525">
+        Title="ShellView" Height="450" Width="800">
+    
     <Grid>
         
+        <DockPanel>
+            
+            <!-- Menu Bar -->
+            <Menu
+                DockPanel.Dock="Top"
+                FontSize="18">
+                
+                <MenuItem Header="_File" />
+                <MenuItem Header="_Account">
+                    <MenuItem
+                        x:Name="LoginScreen"
+                        Header="_Login"
+                        />
+                </MenuItem>
+                
+            </Menu>
+
+            <!-- Content -->
+            <Grid>
+                <ContentControl
+                    x:Name="ActiveItem"
+                    Margin="5"
+                    />
+            </Grid>
+            
+        </DockPanel>
+        
     </Grid>
+    
 </Window>
