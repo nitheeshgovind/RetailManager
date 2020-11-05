@@ -15,15 +15,17 @@ namespace RMDesktopUI.ViewModels
     {
         private IProductEndPoint _productEndPoint;
         private IConfigHelper _configHelper;
+        private ISaleEndPoint _saleEndPoint;
         private BindingList<ProductModel> _products;
         private ProductModel _selectedItem;
         private BindingList<CartItemModel> _cart = new BindingList<CartItemModel>();
         private int _itemQuantity = 1;
 
-        public SalesViewModel(IProductEndPoint productEndPoint, IConfigHelper configHelper)
+        public SalesViewModel(IProductEndPoint productEndPoint, IConfigHelper configHelper, ISaleEndPoint saleEndPoint)
         {
             _productEndPoint = productEndPoint;
             _configHelper = configHelper;
+            _saleEndPoint = saleEndPoint;
         }
 
         protected override async void OnViewLoaded(object view)
@@ -150,6 +152,7 @@ namespace RMDesktopUI.ViewModels
             NotifyOfPropertyChange(() => SubTotal);
             NotifyOfPropertyChange(() => Tax);
             NotifyOfPropertyChange(() => Total);
+            NotifyOfPropertyChange(() => CanCheckOut);
         }
 
         public bool CanRemoveFromCart
@@ -166,6 +169,26 @@ namespace RMDesktopUI.ViewModels
             NotifyOfPropertyChange(() => SubTotal);
             NotifyOfPropertyChange(() => Tax);
             NotifyOfPropertyChange(() => Total);
+            NotifyOfPropertyChange(() => CanCheckOut);
+        }
+
+        public bool CanCheckOut
+        {
+            get
+            {
+                return Cart.Count > 0;
+            }
+        }
+
+        public async Task CheckOut()
+        {
+            SaleModel sale = new SaleModel();
+            foreach (var item in Cart)
+            {
+                sale.SaleDetails.Add(new SaleDetailModel() { ProductId = item.Product.Id, Quantity = item.QuantityInCart });
+            }
+
+            await _saleEndPoint.PostSale(sale);
         }
     }
 }
