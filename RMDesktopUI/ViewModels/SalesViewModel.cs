@@ -99,10 +99,9 @@ namespace RMDesktopUI.ViewModels
         private decimal CalculateSubTotal()
         {
             decimal subTotal = 0;
-            foreach (var item in Cart)
-            {
-                subTotal += (item.Product.RetailPrice * item.QuantityInCart);
-            }
+
+            subTotal = Cart.Sum(x => x.QuantityInCart * x.Product.RetailPrice);
+            
             return subTotal;
         }
 
