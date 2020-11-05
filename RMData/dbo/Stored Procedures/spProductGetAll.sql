@@ -9,7 +9,8 @@ BEGIN
 	[RetailPrice], 
     [QuantityInStock],
     [CreateDate], 
-    [LastModified]
+    [LastModified],
+	[IsTaxable]
 	FROM
 	[dbo].[Product]
 	ORDER BY
