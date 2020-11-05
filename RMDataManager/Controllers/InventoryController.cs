@@ -12,14 +12,14 @@ namespace RMDataManager.Controllers
     public class InventoryController : ApiController
     {
         
-        [AllowAnonymous]
+        [Authorize(Roles = "Admin,Manager")]
         public IEnumerable<InventoryModel> Get()
         {
             InventoryData inventory = new InventoryData();
             return inventory.GetInventory();
         }
 
-        [AllowAnonymous]
+        [Authorize(Roles = "Admin")]
         public void Post(InventoryModel model)
         {
             InventoryData inventory = new InventoryData();

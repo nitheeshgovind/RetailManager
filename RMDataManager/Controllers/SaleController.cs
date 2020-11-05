@@ -9,14 +9,15 @@ namespace RMDataManager.Controllers
     [Authorize]
     public class SaleController : ApiController
     {
+        [Authorize(Roles = "Cashier")]
         public void Post(SaleModel sale)
         {
             SaleData saleData = new SaleData();
             saleData.SaveSale(sale, RequestContext.Principal.Identity.GetUserId());            
         }
 
-        [Route("api/sale/report")]
-        [AllowAnonymous]
+        [Route("report")]
+        [Authorize(Roles = "Manager,Admin")]
         public IEnumerable<SaleReportModel> GetSalesReport()
         {
             SaleData saleData = new SaleData();
