@@ -50,6 +50,8 @@ namespace RMDataManager.Library.Internal.DataAccess
 
             _connection = new SqlConnection(connectionString);
             _connection.Open();
+            isClosed = false;
+
             _transaction = _connection.BeginTransaction();
         }
 
@@ -71,21 +73,37 @@ namespace RMDataManager.Library.Internal.DataAccess
                                 transaction: _transaction);
         }
 
+        private bool isClosed = false;
+
         public void CommitTransaction()
         {
             _transaction?.Commit();
             _connection?.Close();
+            isClosed = true;
         }
 
         public void RollbackTransaction()
         {
             _transaction?.Rollback();
             _connection?.Close();
+            isClosed = true;
         }
 
         public void Dispose()
         {
-            CommitTransaction();
+            if (!isClosed)
+            {
+                try
+                {
+                    CommitTransaction();
+                }
+                catch
+                {
+                }
+            }
+
+            _transaction = null;
+            _connection = null;
         }
     }
 }
