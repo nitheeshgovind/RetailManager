@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Dynamic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using AutoMapper;
 using Caliburn.Micro;
 using RMDesktopUI.Library.Api;
@@ -19,6 +21,7 @@ namespace RMDesktopUI.ViewModels
         private IConfigHelper _configHelper;
         private ISaleEndPoint _saleEndPoint;
         private IMapper _mapper;
+        private IWindowManager _windowManager;
         private BindingList<ProductDisplayModel> _products;
         private ProductDisplayModel _selectedItem;
         private CartItemDisplayModel _selectedCartItem;
@@ -28,12 +31,14 @@ namespace RMDesktopUI.ViewModels
         public SalesViewModel(IProductEndPoint productEndPoint,
                               IConfigHelper configHelper,
                               ISaleEndPoint saleEndPoint,
-                              IMapper mapper) 
+                              IMapper mapper,
+                              IWindowManager windowManager) 
         {
             _productEndPoint = productEndPoint;
             _configHelper = configHelper;
             _saleEndPoint = saleEndPoint;
             _mapper = mapper;
+            _windowManager = windowManager;
         }
 
         protected override async void OnViewLoaded(object view)
@@ -140,9 +145,29 @@ namespace RMDesktopUI.ViewModels
 
         public async Task LoadProducts()
         {
-            var productList = new BindingList<ProductModel>(await _productEndPoint.GetAll());
-            var products = _mapper.Map<List<ProductDisplayModel>>(productList);
-            Products = new BindingList<ProductDisplayModel>(products);
+            try
+            {
+                var productList = new BindingList<ProductModel>(await _productEndPoint.GetAll());
+                var products = _mapper.Map<List<ProductDisplayModel>>(productList);
+                Products = new BindingList<ProductDisplayModel>(products);
+            }
+            catch (Exception ex)
+            {
+                dynamic settings = new ExpandoObject();
+                settings.WindowStartupLocation = WindowStartupLocation.CenterOwner;
+                settings.ResizeMode = ResizeMode.NoResize;
+                settings.Title = "Authorization Failed";
+
+                StatusInfoViewModel status = new StatusInfoViewModel();
+
+                if (ex.Message == "Unauthorized")
+                    status.UpdateMessage("Unauthorized Access!!", "You do not have permission to access the Sales Screen.");
+                else
+                    status.UpdateMessage("Fatal Error", ex.Message);
+
+                _windowManager.ShowDialog(status, null, settings);
+                TryClose();
+            }
         }
 
         private async Task ResetSalesViewModel()
