@@ -72,5 +72,16 @@ namespace RMDataManager.Library.DataAccess
             }                                 
             
         }
+
+        /// <summary>
+        /// Generates the Sales Report data
+        /// </summary>
+        /// <returns></returns>
+        public List<SaleReportModel> GetSaleReport()
+        {
+            SqlDataAccess sql = new SqlDataAccess();
+
+            return sql.LoadData<SaleReportModel, dynamic>("dbo.spSaleReport", new { }, "RMData");
+        }
     }
 }

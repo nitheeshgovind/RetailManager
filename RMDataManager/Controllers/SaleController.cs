@@ -1,20 +1,26 @@
-﻿using System.Web.Http;
-using System.Web.Mvc;
+﻿using System.Collections.Generic;
+using System.Web.Http;
 using Microsoft.AspNet.Identity;
 using RMDataManager.Library.DataAccess;
 using RMDataManager.Library.Models;
 
 namespace RMDataManager.Controllers
 {
-    [System.Web.Mvc.Authorize]
+    [Authorize]
     public class SaleController : ApiController
     {
-        public HttpStatusCodeResult Post(SaleModel sale)
+        public void Post(SaleModel sale)
         {
             SaleData saleData = new SaleData();
-            saleData.SaveSale(sale, RequestContext.Principal.Identity.GetUserId());
+            saleData.SaveSale(sale, RequestContext.Principal.Identity.GetUserId());            
+        }
 
-            return new HttpStatusCodeResult(200);
+        [Route("api/sale/report")]
+        [AllowAnonymous]
+        public IEnumerable<SaleReportModel> GetSalesReport()
+        {
+            SaleData saleData = new SaleData();
+            return saleData.GetSaleReport();
         }
     }
 }
