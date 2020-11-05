@@ -21,6 +21,7 @@ namespace RMDesktopUI.ViewModels
         private IMapper _mapper;
         private BindingList<ProductDisplayModel> _products;
         private ProductDisplayModel _selectedItem;
+        private CartItemDisplayModel _selectedCartItem;
         private BindingList<CartItemDisplayModel> _cart = new BindingList<CartItemDisplayModel>();
         private int _itemQuantity = 1;
 
@@ -60,6 +61,17 @@ namespace RMDesktopUI.ViewModels
                 _selectedItem = value;
                 NotifyOfPropertyChange(() => SelectedProduct);
                 NotifyOfPropertyChange(() => CanAddToCart);
+            }
+        }
+
+        public CartItemDisplayModel SelectedCartItem
+        {
+            get { return _selectedCartItem; }
+            set
+            {
+                _selectedCartItem = value;
+                NotifyOfPropertyChange(() => SelectedCartItem);
+                NotifyOfPropertyChange(() => CanRemoveFromCart);
             }
         }
 
@@ -165,13 +177,21 @@ namespace RMDesktopUI.ViewModels
         {
             get
             {
-                return true;
+                return SelectedCartItem != null;
             }
         }
 
         public void RemoveFromCart()
         {
-
+            SelectedCartItem.Product.QuantityInStock += 1;
+            if (SelectedCartItem.QuantityInCart > 1)
+            {
+                SelectedCartItem.QuantityInCart -= 1;
+            }
+            else
+            {
+                Cart.Remove(SelectedCartItem);
+            }
             NotifyOfPropertyChange(() => SubTotal);
             NotifyOfPropertyChange(() => Tax);
             NotifyOfPropertyChange(() => Total);

@@ -132,6 +132,7 @@
         <!-- Cart -->
         <ListBox
             ItemsSource="{Binding Cart}"
+            SelectedItem="{Binding SelectedCartItem}"
             Grid.Row="2"
             Grid.Column="2"
             MinHeight="200"
