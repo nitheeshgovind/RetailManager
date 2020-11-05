@@ -16,6 +16,6 @@ namespace RMDesktopUI.Library.Models
 
         string Token { get; set; }
 
-        void LogOff();
+        void ClearUserData();
     }
 }

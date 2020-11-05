@@ -1,7 +1,6 @@
-﻿using System;
-using Caliburn.Micro;
+﻿using Caliburn.Micro;
 using RMDesktopUI.EventModels;
-using RMDesktopUI.Library.Models;
+using RMDesktopUI.Library.Api;
 
 namespace RMDesktopUI.ViewModels
 {
@@ -10,6 +9,7 @@ namespace RMDesktopUI.ViewModels
         private IEventAggregator _events;
 
         private bool _isLoggedIn;
+
         public bool IsLoggedIn
         {
             get { return _isLoggedIn; }
@@ -36,7 +36,7 @@ namespace RMDesktopUI.ViewModels
 
         public void LogOut()
         {
-            (IoC.Get<ILoggedInUserModel>()).LogOff();
+            (IoC.Get<IAPIHelper>()).LogOff();
             ActivateItem(IoC.Get<LoginViewModel>());
             IsLoggedIn = false;
         }

@@ -16,7 +16,7 @@ namespace RMDesktopUI.Library.Models
 
         public string Token { get; set; }
 
-        public void LogOff()
+        public void ClearUserData()
         {
             Token = "";
             FirstName = "";

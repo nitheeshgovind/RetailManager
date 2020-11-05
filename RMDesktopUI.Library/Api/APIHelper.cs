@@ -79,5 +79,11 @@ namespace RMDesktopUI.Library.Api
                 }
             }
         }
+
+        public void LogOff()
+        {
+            apiClient.DefaultRequestHeaders.Clear();
+            _loggedInUser.ClearUserData();
+        }
     }
 }
