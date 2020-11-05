@@ -47,6 +47,7 @@
         <!-- Products -->
         <ListBox
             ItemsSource="{Binding Products}"
+            SelectedItem="{Binding SelectedProduct}"
             Grid.Row="2"
             Grid.Column="0"
             MinHeight="200"
@@ -109,7 +110,7 @@
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <TextBlock
-                        Text="{Binding ProductName}"
+                        Text="{Binding DisplayText}"
                         />
                 </DataTemplate>
             </ListBox.ItemTemplate>
