@@ -6,24 +6,20 @@ namespace RMDesktopUI.ViewModels
 {
     public class ShellViewModel : Conductor<object>, IHandle<LogOnEventModel>
     {
-        private LoginViewModel _loginViewModel;
         private IEventAggregator _events;
-        private SalesViewModel _salesViewModel;
 
         public ShellViewModel(LoginViewModel loginViewModel, SalesViewModel salesViewModel, IEventAggregator eventAggregator)
         {
-            _loginViewModel = loginViewModel;
-            _salesViewModel = salesViewModel;
             _events = eventAggregator;
 
             _events.Subscribe(this);
 
-            ActivateItem(_loginViewModel);
+            ActivateItem(IoC.Get<LoginViewModel>());
         }
 
         public void Handle(LogOnEventModel message)
         {
-            ActivateItem(_salesViewModel);
+            ActivateItem(IoC.Get<LoginViewModel>());
         }
     }
 }
