@@ -16,7 +16,15 @@ namespace RMDesktopUI.ViewModels
     {
         private IUserEndPoint _userEndPoint;
         private IWindowManager _windowManager;
+
         private BindingList<UserModel> _users;
+        private UserModel _selectedUser;
+
+        private string _selectedUserName;
+        private BindingList<string> _selectedUserRoles;
+        private BindingList<string> _availableRoles;
+        private string _selectedRoleToRemove;
+        private string _selectedRoleToAdd;
 
         public BindingList<UserModel> Users
         {
@@ -27,6 +35,52 @@ namespace RMDesktopUI.ViewModels
                 NotifyOfPropertyChange(() => Users);
             }
         }
+        public UserModel SelectedUser
+        {
+            get { return _selectedUser; }
+            set
+            {
+                _selectedUser = value;
+                SelectedUserName = value.EmailAddress;                
+                SelectedUserRoles = new BindingList<string>(value.Roles.Select(x => x.Value).ToList());
+                LoadRoles();
+                NotifyOfPropertyChange(() => SelectedUser);
+            }
+        }       
+        public string SelectedUserName
+        {
+            get { return _selectedUserName; }
+            set { _selectedUserName = value; NotifyOfPropertyChange(() => SelectedUserName); }
+        }       
+        public BindingList<string> SelectedUserRoles
+        {
+            get { return _selectedUserRoles; }
+            set { _selectedUserRoles = value; NotifyOfPropertyChange(() => SelectedUserRoles); }
+        }
+        public BindingList<string> AvailableRoles
+        {
+            get { return _availableRoles; }
+            set { _availableRoles = value; NotifyOfPropertyChange(() => AvailableRoles); }
+        }
+        public string SelectedRoleToRemove
+        {
+            get { return _selectedRoleToRemove; }
+            set
+            {
+                _selectedRoleToRemove = value;
+                NotifyOfPropertyChange(() => SelectedRoleToRemove);
+            }
+        }
+        public string SelectedRoleToAdd
+        {
+            get { return _selectedRoleToAdd; }
+            set
+            {
+                _selectedRoleToAdd = value;
+                NotifyOfPropertyChange(() => SelectedRoleToAdd);
+            }
+        }
+
 
         public UserDisplayViewModel(IUserEndPoint userEndPoint, IWindowManager windowManager)
         {
@@ -63,6 +117,32 @@ namespace RMDesktopUI.ViewModels
                 _windowManager.ShowDialog(status, null, settings);
                 TryClose();
             }
+        }
+
+        private async Task LoadRoles()
+        {
+            var roles = await _userEndPoint.GetAllRoles();
+            foreach (var role in roles)
+            {
+                if (SelectedUserRoles.Contains(role.Value))
+                {
+                    AvailableRoles.Add(role.Value);
+                }
+            }
+        }
+
+        public async Task RemoveSelectedRole()
+        {
+            await _userEndPoint.RemoveUserFromRole(SelectedUser.Id, SelectedRoleToRemove);
+            SelectedUserRoles.Remove(SelectedRoleToRemove);
+            AvailableRoles.Add(SelectedRoleToRemove);
+        }
+
+        public async Task AddSelectedRole()
+        {
+            await _userEndPoint.AddUserToRole(SelectedUser.Id, SelectedRoleToAdd);
+            SelectedUserRoles.Add(SelectedRoleToAdd);
+            AvailableRoles.Remove(SelectedRoleToAdd);
         }
     }
 }
