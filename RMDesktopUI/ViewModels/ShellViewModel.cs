@@ -41,6 +41,11 @@ namespace RMDesktopUI.ViewModels
             IsLoggedIn = false;
         }
 
+        public void UserManagement()
+        {
+            ActivateItem(IoC.Get<UserDisplayViewModel>());
+        }
+
         public void Handle(LogOnEventModel message)
         {
             ActivateItem(IoC.Get<SalesViewModel>());
