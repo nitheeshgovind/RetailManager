@@ -10,9 +10,16 @@ namespace RMDataManager.Library.DataAccess
 {
     public class UserData
     {
+        Microsoft.Extensions.Configuration.IConfiguration _configuration;
+
+        public UserData(Microsoft.Extensions.Configuration.IConfiguration configuration)
+        {
+            _configuration = configuration;
+        }
+
         public List<UserModel> GetUserById(string id)
         {
-            SqlDataAccess sql = new SqlDataAccess();
+            SqlDataAccess sql = new SqlDataAccess(_configuration);
             var parameter = new { Id = id };
 
             var users = sql.LoadData<UserModel, dynamic>("dbo.spUserLookup", parameter, "RMData");

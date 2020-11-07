@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30002.166
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RMDataManager", "RMDataManager\RMDataManager.csproj", "{4DF5A75B-D3D2-40BD-B1B1-E2F946F48CD8}"
 EndProject
@@ -11,13 +11,15 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RMDesktopUI", "RMDesktopUI\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RMDataManager.Library", "RMDataManager.Library\RMDataManager.Library.csproj", "{FDB04C18-B300-473E-BD9C-E55EE1D56663}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RMDesktopUI.Library", "RMDesktopUI.Library\RMDesktopUI.Library.csproj", "{86EA9184-5886-4B9C-9605-FB2A6302E3BD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RMDesktopUI.Library", "RMDesktopUI.Library\RMDesktopUI.Library.csproj", "{86EA9184-5886-4B9C-9605-FB2A6302E3BD}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Database", "Database", "{1555BDAC-DCB8-4B5D-A4B2-74B054198542}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "API", "API", "{AC2375D9-D925-4316-99CC-0AE8F3B3B1BA}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WPF", "WPF", "{7B630E60-6EEF-4783-8FFC-2C8DE0486666}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RMApi", "RMApi\RMApi.csproj", "{03DFCA7C-E4E3-41C2-9FF8-45D7ACCBF4FC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -47,6 +49,10 @@ Global
 		{86EA9184-5886-4B9C-9605-FB2A6302E3BD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{86EA9184-5886-4B9C-9605-FB2A6302E3BD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{86EA9184-5886-4B9C-9605-FB2A6302E3BD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{03DFCA7C-E4E3-41C2-9FF8-45D7ACCBF4FC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{03DFCA7C-E4E3-41C2-9FF8-45D7ACCBF4FC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{03DFCA7C-E4E3-41C2-9FF8-45D7ACCBF4FC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{03DFCA7C-E4E3-41C2-9FF8-45D7ACCBF4FC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -57,5 +63,9 @@ Global
 		{44474CB9-CB7E-42C2-8772-69CAA7A4D7A0} = {7B630E60-6EEF-4783-8FFC-2C8DE0486666}
 		{FDB04C18-B300-473E-BD9C-E55EE1D56663} = {AC2375D9-D925-4316-99CC-0AE8F3B3B1BA}
 		{86EA9184-5886-4B9C-9605-FB2A6302E3BD} = {7B630E60-6EEF-4783-8FFC-2C8DE0486666}
+		{03DFCA7C-E4E3-41C2-9FF8-45D7ACCBF4FC} = {AC2375D9-D925-4316-99CC-0AE8F3B3B1BA}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {0EFD6A40-0CE5-4340-A802-921F6F4AE50F}
 	EndGlobalSection
 EndGlobal

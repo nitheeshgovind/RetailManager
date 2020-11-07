@@ -10,10 +10,17 @@ namespace RMDataManager.Library.DataAccess
 {
     public class SaleData
     {
+        Microsoft.Extensions.Configuration.IConfiguration _configuration;
+
+        public SaleData(Microsoft.Extensions.Configuration.IConfiguration configuration)
+        {
+            _configuration = configuration;
+        }
+
         public void SaveSale(SaleModel saleInfo, string cashierId)
         {
             List<SaleDetailDBModel> details = new List<SaleDetailDBModel>();
-            ProductData products = new ProductData();
+            ProductData products = new ProductData(_configuration);
 
             foreach (var item in saleInfo.SaleDetails)
             {
@@ -46,7 +53,7 @@ namespace RMDataManager.Library.DataAccess
             sale.CashierId = cashierId;
             sale.Total = sale.SubTotal + sale.Tax;
 
-            using (SqlDataAccess sql = new SqlDataAccess())
+            using (SqlDataAccess sql = new SqlDataAccess(_configuration))
             {
                 try
                 {
@@ -79,7 +86,7 @@ namespace RMDataManager.Library.DataAccess
         /// <returns></returns>
         public List<SaleReportModel> GetSaleReport()
         {
-            SqlDataAccess sql = new SqlDataAccess();
+            SqlDataAccess sql = new SqlDataAccess(_configuration);
 
             return sql.LoadData<SaleReportModel, dynamic>("dbo.spSaleReport", new { }, "RMData");
         }
