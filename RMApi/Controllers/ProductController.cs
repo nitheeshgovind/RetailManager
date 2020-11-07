@@ -22,6 +22,7 @@ namespace RMApi.Controllers
             _configuration = configuration;
         }
 
+        [HttpGet]
         public List<ProductModel> Get()
         {
             ProductData data = new ProductData(_configuration);

@@ -22,6 +22,7 @@ namespace RMApi.Controllers
         }
 
         [Authorize(Roles = "Admin,Manager")]
+        [HttpGet]
         public IEnumerable<InventoryModel> Get()
         {
             InventoryData inventory = new InventoryData(_configuration);
@@ -29,6 +30,7 @@ namespace RMApi.Controllers
         }
 
         [Authorize(Roles = "Admin")]
+        [HttpPost]
         public void Post(InventoryModel model)
         {
             InventoryData inventory = new InventoryData(_configuration);

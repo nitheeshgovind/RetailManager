@@ -22,6 +22,7 @@ namespace RMApi.Controllers
         private readonly ApplicationDbContext _context;
         private readonly UserManager<IdentityUser> _userManager;
         private Microsoft.Extensions.Configuration.IConfiguration _configuration;
+        
         public UserController(ApplicationDbContext context, UserManager<IdentityUser> userManager, Microsoft.Extensions.Configuration.IConfiguration configuration)
         {
             _context = context;
@@ -38,7 +39,7 @@ namespace RMApi.Controllers
         }
 
         [HttpGet]
-        [Route("api/User/Admin/GetAllUsers")]
+        [Route("Admin/GetAllUsers")]
         [Authorize(Roles = "Admin")]
         public List<ApplicationUserModel> GetAllUsers()
         {
@@ -70,7 +71,7 @@ namespace RMApi.Controllers
 
         [Authorize(Roles = "Admin")]
         [HttpGet]
-        [Route("api/user/admin/getallroles")]
+        [Route("admin/getallroles")]
         public Dictionary<string, string> GetAllRoles()
         {
             var roles = _context.Roles.ToDictionary(x => x.Id, x => x.Name);
@@ -80,7 +81,7 @@ namespace RMApi.Controllers
 
         [Authorize(Roles = "Admin")]
         [HttpPost]
-        [Route("api/user/admin/addrole")]
+        [Route("admin/addrole")]
         public async Task AddRole(UserRoleModel role)
         {
             var user = _context.Users.FirstOrDefault(x => x.Id == role.UserId);
@@ -89,7 +90,7 @@ namespace RMApi.Controllers
 
         [Authorize(Roles = "Admin")]
         [HttpPost]
-        [Route("api/user/admin/removerole")]
+        [Route("admin/removerole")]
         public async Task RemoveRole(UserRoleModel role)
         {
             var user = _context.Users.FirstOrDefault(x => x.Id == role.UserId);
