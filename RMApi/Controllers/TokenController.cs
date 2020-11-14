@@ -30,7 +30,7 @@ namespace RMApi.Controllers
         {
             if (await IsValidUserAndPassword(userName, password))
             {
-                return new ObjectResult(await GenerateToken(userName));
+                return Ok(await GenerateToken(userName));
             }
             else
             {
@@ -59,9 +59,7 @@ namespace RMApi.Controllers
             var claims = new List<Claim>
             {
                 new Claim(ClaimTypes.Name, username),
-                new Claim(ClaimTypes.NameIdentifier, user.Id),
-                new Claim(JwtRegisteredClaimNames.Nbf, new DateTimeOffset(DateTime.Now).ToUnixTimeMilliseconds().ToString()),
-                new Claim(JwtRegisteredClaimNames.Nbf, new DateTimeOffset(DateTime.Now.AddDays(1)).ToUnixTimeMilliseconds().ToString())                
+                new Claim(ClaimTypes.NameIdentifier, user.Id)
             };
 
             foreach (var role in roles)
@@ -69,19 +67,24 @@ namespace RMApi.Controllers
                 claims.Add(new Claim(ClaimTypes.Role, role.Name));
             }
 
-            var token = new JwtSecurityToken(
-                            new JwtHeader(
-                                new SigningCredentials(
-                                        new SymmetricSecurityKey(Encoding.UTF8.GetBytes("MySuperSecretKey")),
-                                        SecurityAlgorithms.HmacSha256
-                                        )),
-                            new JwtPayload(claims));
+            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("RetailManagerApiSuperSecretKey"));
 
-            var output = new 
-                            { 
-                                Access_Token = new JwtSecurityTokenHandler().WriteToken(token),
-                                UserName = username
-                            };
+            // Singing Credentials
+            var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
+
+            // Create JWT token
+            var token = new JwtSecurityToken(
+                        null,
+                        null,
+                        claims,
+                        expires: DateTime.Now.AddHours(2),
+                        signingCredentials: credentials);
+
+            var output = new
+            {
+                Access_Token = new JwtSecurityTokenHandler().WriteToken(token),
+                UserName = username
+            };
 
             return output;
         }

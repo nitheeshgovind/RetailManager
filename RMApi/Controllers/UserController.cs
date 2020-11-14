@@ -30,6 +30,7 @@ namespace RMApi.Controllers
             _configuration = configuration;
         }
 
+        [HttpGet]
         public UserModel GetById()
         {
             string id = User.FindFirstValue(ClaimTypes.NameIdentifier);
