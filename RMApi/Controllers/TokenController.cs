@@ -71,7 +71,7 @@ namespace RMApi.Controllers
                 claims.Add(new Claim(ClaimTypes.Role, role.Name));
             }
 
-            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Secrets:SecretKey"]));
+            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Secrets:SecurityKey"]));
 
             // Singing Credentials
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);

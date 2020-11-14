@@ -59,7 +59,7 @@ namespace RMApi
                         ValidateAudience = false,
                         ValidateLifetime = true,
                         ValidateIssuerSigningKey = true,
-                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Secrets:SecretKey"])),                                                                       
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Secrets:SecurityKey"])),                                                                       
                         ClockSkew = TimeSpan.FromMinutes(5)
                     };
                 });
