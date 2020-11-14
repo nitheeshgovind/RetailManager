@@ -21,6 +21,10 @@ namespace RMDesktopUI.ViewModels
                 NotifyOfPropertyChange(() => IsLoggedIn);
             }
         }
+        public bool IsLoggedOut
+        {
+            get { return !IsLoggedIn; }
+        }
 
         public ShellViewModel(IEventAggregator eventAggregator)
         {
@@ -36,11 +40,21 @@ namespace RMDesktopUI.ViewModels
             await TryCloseAsync();
         }
 
+        public async Task LogIn()
+        {
+            await ActivateItemAsync(IoC.Get<LoginViewModel>(), new CancellationToken());
+            //IsLoggedIn = true;
+            //NotifyOfPropertyChange(() => IsLoggedIn);
+            //NotifyOfPropertyChange(() => IsLoggedOut);
+        }
+
         public async Task LogOut()
         {
             (IoC.Get<IAPIHelper>()).LogOff();
             await ActivateItemAsync(IoC.Get<LoginViewModel>(), new CancellationToken());
             IsLoggedIn = false;
+            NotifyOfPropertyChange(() => IsLoggedIn);
+            NotifyOfPropertyChange(() => IsLoggedOut);
         }
 
         public async Task UserManagement()
@@ -57,6 +71,8 @@ namespace RMDesktopUI.ViewModels
         {
             await ActivateItemAsync(IoC.Get<SalesViewModel>(), cancellationToken);
             IsLoggedIn = true;
+            NotifyOfPropertyChange(() => IsLoggedIn);
+            NotifyOfPropertyChange(() => IsLoggedOut);
         }
     }
 }
