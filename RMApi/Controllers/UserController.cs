@@ -11,6 +11,7 @@ using RMApi.Models;
 using RMApi.Data;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Logging;
 
 namespace RMApi.Controllers
 {
@@ -22,14 +23,17 @@ namespace RMApi.Controllers
         private readonly ApplicationDbContext _context;
         private readonly UserManager<IdentityUser> _userManager;
         private readonly IUserData userData;
-        
+        private readonly ILogger<UserController> logger;
+
         public UserController(ApplicationDbContext context,
                               UserManager<IdentityUser> userManager,
-                              IUserData userData)
+                              IUserData userData,
+                              ILogger<UserController> logger)
         {
             _context = context;
             _userManager = userManager;
             this.userData = userData;
+            this.logger = logger;
         }
 
         [HttpGet]
@@ -87,6 +91,10 @@ namespace RMApi.Controllers
         public async Task AddRole(UserRoleModel role)
         {
             var user = _context.Users.FirstOrDefault(x => x.Id == role.UserId);
+
+            logger.LogInformation("Admin {Admin} added user {User} to role {Role}",
+                                    user.Id, user.Id, role.Name);
+
             await _userManager.AddToRoleAsync(user, role.Name);
         }
 
