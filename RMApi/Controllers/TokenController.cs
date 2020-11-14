@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using RMApi.Data;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using Microsoft.Extensions.Configuration;
 
 namespace RMApi.Controllers
 {
@@ -16,12 +17,15 @@ namespace RMApi.Controllers
     {
         private readonly ApplicationDbContext context;
         private readonly UserManager<IdentityUser> userManager;
+        private readonly IConfiguration configuration;
 
         public TokenController(ApplicationDbContext context,
-                                UserManager<IdentityUser> userManager)
+                                UserManager<IdentityUser> userManager,
+                                IConfiguration configuration)
         {
             this.context = context;
             this.userManager = userManager;
+            this.configuration = configuration;
         }
 
         [Route("/token")]
@@ -67,7 +71,7 @@ namespace RMApi.Controllers
                 claims.Add(new Claim(ClaimTypes.Role, role.Name));
             }
 
-            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("RetailManagerApiSuperSecretKey"));
+            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Secrets:SecretKey"]));
 
             // Singing Credentials
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
