@@ -1,6 +1,8 @@
 ﻿using Caliburn.Micro;
 using RMDesktopUI.EventModels;
 using RMDesktopUI.Library.Api;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace RMDesktopUI.ViewModels
 {
@@ -24,31 +26,36 @@ namespace RMDesktopUI.ViewModels
         {
             _events = eventAggregator;
 
-            _events.Subscribe(this);
+            _events.SubscribeOnUIThread(this);
 
-            ActivateItem(IoC.Get<LoginViewModel>());
+            ActivateItemAsync(IoC.Get<LoginViewModel>(), new CancellationToken());
         }
 
-        public void ExitApplication()
+        public async Task ExitApplication()
         {
-            TryClose();
+            await TryCloseAsync();
         }
 
-        public void LogOut()
+        public async Task LogOut()
         {
             (IoC.Get<IAPIHelper>()).LogOff();
-            ActivateItem(IoC.Get<LoginViewModel>());
+            await ActivateItemAsync(IoC.Get<LoginViewModel>(), new CancellationToken());
             IsLoggedIn = false;
         }
 
-        public void UserManagement()
+        public async Task UserManagement()
         {
-            ActivateItem(IoC.Get<UserDisplayViewModel>());
+            await ActivateItemAsync(IoC.Get<UserDisplayViewModel>(), new CancellationToken());
         }
 
         public void Handle(LogOnEventModel message)
         {
-            ActivateItem(IoC.Get<SalesViewModel>());
+            
+        }
+
+        public async Task HandleAsync(LogOnEventModel message, CancellationToken cancellationToken)
+        {
+            await ActivateItemAsync(IoC.Get<SalesViewModel>(), cancellationToken);
             IsLoggedIn = true;
         }
     }

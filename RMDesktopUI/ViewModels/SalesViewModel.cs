@@ -165,8 +165,8 @@ namespace RMDesktopUI.ViewModels
                 else
                     status.UpdateMessage("Fatal Error", ex.Message);
 
-                _windowManager.ShowDialog(status, null, settings);
-                TryClose();
+                await _windowManager.ShowDialogAsync(status, null, settings);
+                await TryCloseAsync();
             }
         }
 

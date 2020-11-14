@@ -17,9 +17,9 @@ namespace RMDesktopUI.ViewModels
             NotifyOfPropertyChange(() => Message);
         }
 
-        public void Close()
+        public async System.Threading.Tasks.Task Close()
         {
-            TryClose();
+            await TryCloseAsync();
         }
     }
 }
