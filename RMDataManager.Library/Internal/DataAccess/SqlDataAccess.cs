@@ -9,7 +9,7 @@ using Microsoft.Extensions.Configuration;
 
 namespace RMDataManager.Library.Internal.DataAccess
 {
-    internal class SqlDataAccess : IDisposable
+    public class SqlDataAccess : IDisposable, ISqlDataAccess
     {
         private IConfiguration _configuration;
 
@@ -45,7 +45,7 @@ namespace RMDataManager.Library.Internal.DataAccess
 
             using (IDbConnection connection = new SqlConnection(connectionString))
             {
-                connection.Execute(storedProcedure, parameters, commandType: CommandType.StoredProcedure);                
+                connection.Execute(storedProcedure, parameters, commandType: CommandType.StoredProcedure);
             }
         }
 

@@ -15,19 +15,17 @@ namespace RMApi.Controllers
     [Authorize]
     public class ProductController : ControllerBase
     {
-        private Microsoft.Extensions.Configuration.IConfiguration _configuration;
+        private readonly IProductData products;
 
-        public ProductController(Microsoft.Extensions.Configuration.IConfiguration configuration)
+        public ProductController(IProductData products)
         {
-            _configuration = configuration;
+            this.products = products;
         }
 
         [HttpGet]
         public List<ProductModel> Get()
         {
-            ProductData data = new ProductData(_configuration);
-
-            return data.GetProducts();
+            return products.GetProducts();
         }
     }
 }

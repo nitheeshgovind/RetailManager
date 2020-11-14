@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RMDataManager.Library.DataAccess;
 using RMDataManager.Library.Models;
+using System.Collections.Generic;
+using System.Security.Claims;
 
 namespace RMApi.Controllers
 {
@@ -15,18 +11,17 @@ namespace RMApi.Controllers
     [ApiController]
     public class SaleController : ControllerBase
     {
-        private Microsoft.Extensions.Configuration.IConfiguration _configuration;
+        private readonly ISaleData saleData;
 
-        public SaleController(Microsoft.Extensions.Configuration.IConfiguration configuration)
+        public SaleController(ISaleData saleData)
         {
-            _configuration = configuration;
+            this.saleData = saleData;
         }
 
         [Authorize(Roles = "Cashier")]
         [HttpPost]
         public void Post(SaleModel sale)
         {
-            SaleData saleData = new SaleData(_configuration);            
             saleData.SaveSale(sale, User.FindFirstValue(ClaimTypes.NameIdentifier));
         }
 
@@ -35,7 +30,6 @@ namespace RMApi.Controllers
         [HttpGet]
         public IEnumerable<SaleReportModel> GetSalesReport()
         {
-            SaleData saleData = new SaleData(_configuration);
             return saleData.GetSaleReport();
         }
     }

@@ -8,18 +8,17 @@ using RMDataManager.Library.Models;
 
 namespace RMDataManager.Library.DataAccess
 {
-    public class UserData
+    public class UserData : IUserData
     {
-        Microsoft.Extensions.Configuration.IConfiguration _configuration;
-
-        public UserData(Microsoft.Extensions.Configuration.IConfiguration configuration)
+        private readonly ISqlDataAccess sql;
+        
+        public UserData(ISqlDataAccess sql)
         {
-            _configuration = configuration;
+            this.sql = sql;
         }
 
         public List<UserModel> GetUserById(string id)
         {
-            SqlDataAccess sql = new SqlDataAccess(_configuration);
             var parameter = new { Id = id };
 
             var users = sql.LoadData<UserModel, dynamic>("dbo.spUserLookup", parameter, "RMData");
